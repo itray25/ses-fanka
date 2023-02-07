@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <style>
+        .headers{
+            height: 50px;
+            background-color: lightcyan;
+        }
+
+
+#title {
+    display: inline-block;
+    font-size: 20px;
+    position: absolute;
+    padding: 5px;
+    background-color: white;
+    vertical-align: middle;
+    left: 50px;
+    border-radius: 3px;
+    top: 15px;
+}
+      .order-panel {
+        width: 40em;
+        padding: 1em;
+        border: solid 1px #ccc;
+        text-align: center;
+        color: #333;
+        font-size: 0.4vw;
+      }
+      .order-name {
+        width: 4.8em;
+        padding: 5px 4px;
+        color: #333;
+        font-size: 2em;
+        font-weight: 700;
+      }
+      .img-qrcode {
+        width: 9.6em;
+      }
+      .user-name {
+        font-size: 2.4em;
+        margin-top: 0.2em;
+      }
+      .ticket-body {
+        padding-right: 1em;
+      }
+      .order-area {
+        margin: -0.3em 0;
+        font-size: 10em;
+        font-weight: 700;
+      }
+      .order-area-tail {
+        font-size: 0.2em;
+      }
+      .order-location {
+        margin-top: 0.75em;
+        font-size: 1.8em;
+        line-height: 2em;
+        font-weight: 700;
+      }
+      #form {
+    display: block;
+    width: 500px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 5px;
+      }
+    #no-use {
+    transform: rotate(-30deg);
+    position: absolute;
+    margin-top: 6em;
+    color: #00000030;
+    left: -2em;
+}
+    </style>
+  </head>
+  <body>
+    <div class="headers">
+      <div id="title">ses-fanka-stimulation</div>
+    </div>
+    <div id="post-main" style="padding: 20px;">
+      <xy-form id="form">
+        <xy-form-item legend="user-名称">
+            <xy-input name="user" placeholder="张三"  required icon="user"  id="user"></xy-input>
+        </xy-form-item>
+        <xy-form-item legend="region-区号">
+            <xy-input name="region" placeholder="10" required type="number" icon="Function" id="region"></xy-input>
+        </xy-form-item>
+        <xy-form-item legend="floor-楼层">
+          <xy-input name="floor" placeholder="三" required icon="database" id="floor"></xy-input>
+      </xy-form-item>
+      <xy-form-item legend="date-日期">
+        <xy-input name="date" required id="date"icon="time-circle"></xy-input>
+        <div style="display:inline-block">&nbsp;or&nbsp;</div>
+        <xy-date-picker defaultvalue="" id="date2"></xy-date-picker>
+    </xy-form-item>
+    <xy-form-item legend="weekcode-星期">
+      <xy-input name="region" placeholder="八" required icon="number" id="weekcode"></xy-input>
+  </xy-form-item>
+  <xy-form-item legend="size-大小">
+    <xy-slider defaultvalue="0.8" showtips suffix="vw" min="0.4" max="2.4" step="0.1" id="size" onchange="size()"></xy-slider>
+</xy-form-item>
+    </xy-form>
+      
+    </div>
+    <div id="fanka-main">
+      
+      <div class="ticket-print only-print">
+        <div class="order-panel">
+          <div id="no-use">仅用于学习用途，禁止违规使用！</div>
+          <div class="d-flex justify-content-between">
+            <div style="display: inline-block">
+              <div class="order-name">盖浇饭</div>
+              <img
+                src="https://pic.imgdb.cn/item/60ed5c3e5132923bf81073f5.png"
+                class="img-qrcode border"
+                id="qrcode-print"
+                style="border: 1px solid #dee2e6 !important"
+              />
+              <div class="user-name text-center">
+                <span id="name-print">张三</span>
+              </div>
+            </div>
+            <div class="ticket-body" style="display: inline-block">
+              <div class="order-area">
+                <div id="order-area" style="display: inline-block">5</div> 
+                <span class="order-area-tail">区</span>
+              </div>
+              <div class="order-location">
+                <span
+                  ><div id="floorx" style="display: inline-block">6号楼301室</div><span>
+                    <br />
+                    <span id="nowtime-print">2/5 周</span
+                    ><span id="days-print">日</span>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script type="module" src="./xy-ui/index.js"></script>
+    <script>
+      let d= new Date();
+      let weekday=["日","一","二","三","四","五","六"]
+      $("#nowtime-print").text((d.getMonth()+1)+"/"+d.getDate()+" 周")
+      $("#days-print").text(weekday[d.getDay()])
+      $("#date").attr("placeholder",(d.getMonth()+1)+"/"+d.getDate())
+      //$("#date2").attr("defaultvalue",(d.getMonth()+1)+"/"+d.getDate())
+      function size(){
+        $(".order-panel").css("font-size",$("#size").val()+"vw")
+        //$("#no-use").css("left",($(".d-flex").width()/2-100)+"px")
+      }
+      function input_ev(ele,target,process){
+        ele.on("input", function(){
+        if(ele.val()!=""){
+          target.text(ele.val()+process)
+        }
+        else{
+          target.text("⁣⁣⁣⁣ ")
+        }
+        
+      })
+      }
+      let inputs_list=[[$("#user"),$("#name-print"),""],[$("#floor"),$("#floorx"),""],[$("#date"),$("#nowtime-print")," 周"],[$("#region"),$("#order-area"),""],[$("#weekcode"),$("#days-print"),""]]
+      $(function(){
+        XyDialog.warning("本模拟器仅用于学习或整活，请勿用作违规用途！\n错误使用造成的一切责任将由使用者自负。","我已知晓")
+        for(var i=0;i<inputs_list.length;i++){
+          input_ev(inputs_list[i][0],inputs_list[i][1],inputs_list[i][2])
+        }
+        
+        $("#date2").on("change",function(){
+          let val=$("#date2").val().split("-")
+          $("#nowtime-print").text(val[1].replace(/\b(0+)/gi,"")+"/"+val[2].replace(/\b(0+)/gi,"")+" 周")
+          console.log($("#date2").val())
+        })
+})
+
+
+      var targetNode = $('.order-panel')[0]
+      var targetNode2 = $('#no-use')[0]
+      var  options = {
+        'childList': true,
+
+        
+    }
+    var options2={        "attributes":true}
+      let mutationObserver=new MutationObserver(function(mutations){
+      mutations.forEach(function (mutation) {
+        if($("#no-use")[0]==undefined){
+          XyMessage.warning("检测到水印删除，请勿用于违规行为！一切后果自负")
+          $(".order-panel").prepend(`<div id="no-use">仅用于学习用途，禁止违规使用！</div>`)
+        }
+      })
+    })
+    let mutationObserver2=new MutationObserver(function(mutations){
+      mutations.forEach(function (mutation) {
+        console.log(mutation)
+      })
+    })
+    mutationObserver.observe(targetNode, options );
+    mutationObserver2.observe(targetNode2, options2 );
+      document.getElementById("qrcode-print").src =
+        "https://pic.imgdb.cn/item/63e1a4a84757feff337f49bd.jpg";
+    </script>
+  </body>
+</html>
