@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>SES饭卡模拟器</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <style>
         .headers{
@@ -26,7 +27,7 @@
         border: solid 1px #ccc;
         text-align: center;
         color: #333;
-        font-size: 0.4vw;
+        font-size: 0.8vw;
       }
       .order-name {
         width: 4.8em;
@@ -71,21 +72,65 @@
     position: absolute;
     margin-top: 6em;
     color: #00000030;
-    left: -2em;
+    left: 10em;
+}
+#image {
+    width: 500px;
+    display: inline-block;
+    margin-left: 30px;
+    margin-top: 40px;
+    vertical-align: top;
+}
+#post-main {
+    padding: 20px;
+    display: inline-block;
+    vertical-align: top;
+}
+#badge {
+    position: absolute;
+    top: 22px;
+    left: 275px;
 }
     </style>
   </head>
   <body>
     <div class="headers">
-      <div id="title">ses-fanka-stimulation</div>
+      <div id="title">ses-fanka-simulation</div>
+      <svg xmlns="http://www.w3.org/2000/svg" width="100" height="20" id="badge">
+        <linearGradient id="m1" x2="0" y2="100%">
+          <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+          <stop offset="1" stop-opacity=".1"/>
+        </linearGradient>
+        <g mask="url(#m1)">
+          <rect x="0" y="0" width="90" height="20" rx="3" ry="3" style="fill:#555"/>
+          <rect x="60" y="0" width="10" height="20" style="fill:#007ec6"/>
+          <rect x="70" y="0" width="30" height="20" rx="3" ry="3" style="fill:#007ec6"/>
+          <path fill="url(#m1)" d="M0 0h100v20H0z"/>
+        </g>
+        <g font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="12" fill="#fff">
+          <g>
+            <text x="8" y="15" fill="#DDD" fill-opacity=".4">licence</text>
+            <text x="8" y="14">licence</text>
+          </g>
+          <g>
+            <text x="68" y="15" fill="#DDD" fill-opacity=".4">MIT</text>
+            <text x="68" y="14">MIT</text>
+          </g>
+        </g>
+      </svg>
+      <img src="./ses-fanka.svg" style="display: inline-block;position: absolute;left: 380px;top: 22px;">
     </div>
     <div id="post-main" style="padding: 20px;">
       <xy-form id="form">
         <xy-form-item legend="user-名称">
             <xy-input name="user" placeholder="张三"  required icon="user"  id="user"></xy-input>
         </xy-form-item>
+        
+        <xy-form-item legend="food-食物">
+          <xy-input name="food" placeholder="套餐D" required icon="control" id="food"></xy-input>
+      </xy-form-item>
         <xy-form-item legend="region-区号">
-            <xy-input name="region" placeholder="10" required type="number" icon="Function" id="region"></xy-input>
+            <xy-input name="region" placeholder="10" required type="number" icon="Function" id="region" pattern="1|1|4"></xy-input>
         </xy-form-item>
         <xy-form-item legend="floor-楼层">
           <xy-input name="floor" placeholder="三" required icon="database" id="floor"></xy-input>
@@ -95,8 +140,8 @@
         <div style="display:inline-block">&nbsp;or&nbsp;</div>
         <xy-date-picker defaultvalue="" id="date2"></xy-date-picker>
     </xy-form-item>
-    <xy-form-item legend="weekcode-星期">
-      <xy-input name="region" placeholder="八" required icon="number" id="weekcode"></xy-input>
+    <xy-form-item legend="weekcode-星期" >
+      <xy-input name="region" placeholder="八" required icon="number" id="weekcode" pattern="^[\u4e00-\u9fa5]{0,1}" errortips="不建议过长"></xy-input>
   </xy-form-item>
   <xy-form-item legend="size-大小">
     <xy-slider defaultvalue="0.8" showtips suffix="vw" min="0.4" max="2.4" step="0.1" id="size" onchange="size()"></xy-slider>
@@ -104,6 +149,7 @@
     </xy-form>
       
     </div>
+    <img id="image"src="https://pic.imgdb.cn/item/63e1ad0c4757feff338a774c.jpg">
     <div id="fanka-main">
       
       <div class="ticket-print only-print">
@@ -141,6 +187,7 @@
         </div>
       </div>
     </div>
+    
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script type="module" src="./xy-ui/index.js"></script>
     <script>
@@ -165,7 +212,7 @@
         
       })
       }
-      let inputs_list=[[$("#user"),$("#name-print"),""],[$("#floor"),$("#floorx"),""],[$("#date"),$("#nowtime-print")," 周"],[$("#region"),$("#order-area"),""],[$("#weekcode"),$("#days-print"),""]]
+      let inputs_list=[[$("#user"),$("#name-print"),""],[$("#floor"),$("#floorx"),""],[$("#date"),$("#nowtime-print")," 周"],[$("#region"),$("#order-area"),""],[$("#weekcode"),$("#days-print"),""],[$("#food"),$(".order-name"),""]]
       $(function(){
         XyDialog.warning("本模拟器仅用于学习或整活，请勿用作违规用途！\n错误使用造成的一切责任将由使用者自负。","我已知晓")
         for(var i=0;i<inputs_list.length;i++){
@@ -176,6 +223,9 @@
           let val=$("#date2").val().split("-")
           $("#nowtime-print").text(val[1].replace(/\b(0+)/gi,"")+"/"+val[2].replace(/\b(0+)/gi,"")+" 周")
           console.log($("#date2").val())
+        })
+        $("#region").on("change",function(){
+          $("#order-area").text($("#region").val())
         })
 })
 
