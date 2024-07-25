@@ -22,6 +22,6 @@ SES饭卡生成器html开源代码，有两组代码，效果略有不同！
 
 #### 参与贡献
 
-1.  感谢@coxine的开源项目，链接：https://github.com/coxine/sesfanka
+1.  感谢同学的开源项目
 2.  itray25进行二次开发与优化
 3.  新茶会成员的倾力支持！
