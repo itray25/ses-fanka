@@ -9,12 +9,14 @@ SES饭卡生成器html开源代码，有两组代码，效果略有不同！
 1.canteen-demo.html:重定向html文件
 2.canteen-1（~9）.html:饭票生成文件
 3.canteen-forbid.html:钓鱼文件（**可使食堂阿姨识别出这是生成的饭票**，特此声明）
-
+第二版
+1.xy-ui UI框架依赖
+2.index.html主文件
 
 #### 安装教程
 
 1.  将以上文件放置在网站根目录处
-2.  在浏览器访问canteen-demo.html即可使用！
+2.  在浏览器访问index.html即可使用！
 
 #### 使用说明
 
